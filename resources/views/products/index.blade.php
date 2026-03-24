@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <style>
+   
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+   
+   <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
@@ -174,8 +177,8 @@
     <button type="button" class="btn-add" onclick="openAddModal()">Add Product</button>
 
     <div class="filter-form">
-        <input type="text" id="searchQuery" placeholder="Search by name..." value="">
-        <button type="button" class="btn-search" onclick="searchProducts()">Search</button>
+        <input type="text" onkeypress="searchProducts(event)" id="searchQuery" placeholder="Search by name..." value="">
+        <button type="button" class="btn-search" onclick="executeSearch()">Search</button>
     </div>
 
     <div class="filter-form">
@@ -316,9 +319,17 @@
     </div>
 
     <script>
-        function searchProducts() {
-            const query = document.getElementById('searchQuery').value;
-            const categoryId = document.getElementById('category').value;
+        function executeSearch()
+        {
+            const query = $('#searchQuery').val();
+            const categoryId = $('#category').val();
+
+
+            // const query = Document.getElementById('searchQuery').value;
+            // const categoryId = Document.getElementById('category').value;
+
+
+            console.log(query, categoryId);
             
             axios.get('{{ route("products.search") }}', {
                 params: {
@@ -327,11 +338,18 @@
                 }
             })
             .then(function (response) {
-                document.getElementById('productsTable').innerHTML = response.data;
+               // console.log(response.data);
+                $('#productsTable').html(response.data);
             })
             .catch(function (error) {
                 console.error('Error searching products:', error);
             });
+}
+
+        function searchProducts(e) {
+      
+            if(e.key !== 'Enter') return;
+            executeSearch();
         }
 
         function openAddModal() {
