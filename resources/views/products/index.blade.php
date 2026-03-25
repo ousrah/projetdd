@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-   
-   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
    
    <style>
         body {
@@ -192,6 +191,7 @@
                     </option>
                 @endforeach
             </select>
+           
         </form>
     </div>
 
@@ -209,6 +209,7 @@
         </thead>
         <tbody id="productsTable">
             @include('products.partials._product-row')
+        
         </tbody>
     </table>
 
@@ -329,7 +330,7 @@
             // const categoryId = Document.getElementById('category').value;
 
 
-            console.log(query, categoryId);
+            //console.log(query, categoryId);
             
             axios.get('{{ route("products.search") }}', {
                 params: {
@@ -338,8 +339,11 @@
                 }
             })
             .then(function (response) {
-               // console.log(response.data);
-                $('#productsTable').html(response.data);
+                console.log(response);
+
+
+               document.getElementById('productsTable').innerHTML = response.data;
+              //  $('#productsTable').html(response.data);
             })
             .catch(function (error) {
                 console.error('Error searching products:', error);
@@ -354,6 +358,8 @@
 
         function openAddModal() {
             document.getElementById('addModal').style.display = 'block';
+            //$("#addModal").show();
+
         }
 
         function openEditModal(product) {
